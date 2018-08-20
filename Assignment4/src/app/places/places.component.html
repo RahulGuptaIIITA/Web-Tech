@@ -1,0 +1,63 @@
+<div *ngIf="showResult" id="table-div">
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Category</th>
+        <th scope="col">Name</th>
+        <th scope="col">Address</th>
+        <th scope="col">Favorites</th>
+        <th scope="col">Details</th>
+      </tr>
+    </thead>
+    <tbody *ngFor="let place of placesCopy; let myIndex = index">
+      <tr [ngClass]="{'highlight-background': place.place_id == highlightedDetailElement}">
+        <td>{{20*listIndex + myIndex+1}}</td>
+        <td><img style="height:40px;width:40px" src={{place.icon}}/></td>
+        <td>{{place.name}}</td>
+        <td>{{place.vicinity}}</td>
+        <td *ngIf="!place?.star" ><button (click)="addFavorites(place,myIndex)" type="button" class="btn btn-sm" style="background-color:white; border: solid grey 1px"><i class="fa fa-star-o"></i></button></td>
+        <td *ngIf="place?.star"><button (click)="addFavorites(place,myIndex)" type="button" class="btn btn-sm" style="background-color:white; border: solid grey 1px"><i class="fa fa-star"></i></button></td>
+        <td><button (click)="moreDetail(place.place_id)" type="button" class="btn btn-sm" style="background-color:white; border: solid grey 1px"><i class="fa fa-angle-right"></i></button></td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="container">
+    <div style="text-align:center; margin-bottom:2%">
+      <button *ngIf="listIndex>0 && listIndex<3" (click)="searchPrev()" type="button" class="btn btn-default" style="background-color:white; border: solid grey 1px">Previous</button>
+      <button *ngIf="listIndex<2 && placesCopy.length == 20" (click)="searchNext()" type="button" class="btn btn-default" style="background-color:white; border: solid grey 1px">Next</button>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="showFavorite && favoritePlaces.length > 0 && updateFavorites()" id="table-div">
+<table class="table" >
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Category</th>
+      <th scope="col">Name</th>
+      <th scope="col">Address</th>
+      <th scope="col">Favorites</th>
+      <th scope="col">Details</th>
+    </tr>
+  </thead>
+  <tbody *ngFor="let place of favoritePlaces; let myIndex = index">
+    <tr>
+      <td>{{myIndex+1}}</td>
+      <td><img style="height:40px;width:40px" src={{place.icon}}/></td>
+      <td>{{place.name}}</td>
+      <td>{{place.vicinity}}</td>
+      <td><button (click)="removeFavorite(place)" type="button" class="btn btn-sm" style="background-color:transparent; border: solid grey 1px"><i class="fa fa-trash-o"></i></button></td>
+      <td><button (click)="moreDetail(place.place_id)" type="button" class="btn btn-sm" style="background-color:transparent; border: solid grey 1px"><i class="fa fa-angle-right"></i></button></td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<div *ngIf="favoritePlaces.length == 0 && showFavorite" class="alert alert-warning" style="margin-top:6%">
+    No Records.
+</div>
+
+<div  *ngIf="showPlaceDetails">
+  <app-placedetails [@myAnimation] (backToList)="list($event)" [detailMapBody]=detailMap [showFavorite]="showFavorite" [showResult]="showResult"  [placeDetail]=placeDetails [favoritePlaces]=favoritePlaces></app-placedetails>
+</div>

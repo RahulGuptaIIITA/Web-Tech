@@ -1,0 +1,13 @@
+#form-div {
+    background-color: #F8F8F8
+}
+.center-block {
+    float:none;
+}
+#warning {
+    color:red;
+}
+
+.red-border-class {
+    border: solid 2px red; 
+}

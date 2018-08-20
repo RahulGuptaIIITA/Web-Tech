@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8"/>
+	<title>Homework 4</title>
+	<script type="text/javascript">
+		
+		var jsonDoc;
+		function createHTML(jsonString) {
+
+        	// code for headers
+        	html_text = "";
+			html_text += "<HTML><HEAD><TITLE> JSON FILE OUTPUT </TITLE></HEAD><BODY><CENTER>";
+            html_text += "<TABLE BORDER='2'><tr>"; 
+			
+			var dataHeaders = jsonString.Mainline.Table.Header.Data;
+ 			var dataHeaderKeys = Object.keys(dataHeaders);
+
+ 			for (i=0; i < dataHeaderKeys.length; i++) {
+                headers_list = dataHeaders[i];
+                html_text += "<th>" + headers_list + "</th>"
+            }
+
+            html_text += "</tr>";	
+
+            if (typeof(jsonDoc.Mainline.Table.Row) == 'undefined') {
+            	window.alert("No Trucking Data to display!");
+            	return;
+        	}
+
+            // code for data population
+            var companyDataObjects = jsonString.Mainline.Table.Row;
+            var companyDataKeys = Object.keys(companyDataObjects);
+
+            if ( companyDataKeys.length == 0 ) {
+            	alert("No Trucking Data to display!");
+            	return;
+            }
+
+
+          	for ( i = 0; i < companyDataKeys.length; i++)
+            {
+            	html_text += "<tr>";
+            	var dataObject = companyDataObjects[companyDataKeys[i]];
+            	var dataKeys = Object.keys(dataObject);
+
+            	for (j = 0; j < dataKeys.length; j++ ) 
+            	{
+            		prop = dataKeys[j];
+					if (prop == "Logo") {
+						html_text += "<td><img src='" + dataObject[prop] + "'height='160' width='320'></td>";
+
+					} else if (prop == "Hubs") {
+                        var hqInfo = dataObject[prop];
+                        var hqInfoKeys = Object.keys(hqInfo);
+                        html_text += "<td><ul>";
+                        for(var k in hqInfoKeys)
+                        {
+                            for(var index in hqInfo[hqInfoKeys[k]]) {
+                                if (k == "0" && index == "0") {
+                                    html_text += "<li><b>" + hqInfo[hqInfoKeys[k]][index] + "</b></li>";
+                                } else {
+                                	html_text += "<li>" + hqInfo[hqInfoKeys[k]][index] + "</li>";
+                            	}
+                        	}
+                        }
+                        html_text +="</ul></td>";
+                    
+                    } else if (prop == "HomePage") {
+                    	html_text += "<td><a href='"+ dataObject[prop] + "'>" + dataObject[prop] + "</td>";
+                    
+                    } else {
+						html_text += "<td>" + dataObject[prop] + "</td>";
+					}
+				}
+				html_text+="</tr>";
+			}
+			html_text+="</tbody>";
+			html_text+="</table>";
+			html_text+="</body></html>";
+
+			neWin =	window.open("",	"Assignment4",'_blank');
+            neWin.document.write(html_text);
+        }
+
+		function viewJSON(form) {
+		    var url = form.URL.value;
+            if (url == "") {
+	            window.alert("Enter the JSON File Name, don't leave input box Empty!");
+	        
+	        } else {
+	            try {
+	            	var xmlhttp = new XMLHttpRequest();
+		            xmlhttp.open("GET", url, false);
+		            xmlhttp.send();
+					
+		            response = xmlhttp.responseText;
+		            jsonDoc = JSON.parse(response);
+		            createHTML(jsonDoc);
+
+		        } catch (exception) {
+		        	window.alert("File does not exist!");
+		        } 
+		    }             
+		}
+	</script>
+</head>
+<body style="text-align:center;">
+	<h3>Enter URL for Tracking List JSON File</h3>
+	<form name="myform" action="" method="POST">
+	  <input type="text" name="URL"/><br>
+	  <input style="margin-top:20px;" type="button" name="submit" value="Submit Query" onclick="viewJSON(this.form)"/>
+	</form> 
+</body>
+</html>

@@ -1,0 +1,255 @@
+<div class="container panes" *ngIf="!showResult && !showFavorite">
+  <div style="text-align: center; margin-top:4%">
+    <h4>{{placeDetail.name}}</h4>
+  </div>
+  <div class="row" style="margin-bottom:2%">
+    <div class="col-md-6">
+      <button (click)="showList()" type="button" class="btn btn-sm" style="background-color:transparent; border: solid grey 1px"><i class="fa fa-angle-left"></i>List</button>
+    </div>
+    <div class="col-md-6 text-right">
+      <button *ngIf="!isFavorite" (click)="addFavorites(placeDetail)" type="button" class="btn btn-sm" style="background-color:white; border: solid grey 1px"><i class="fa fa-star-o"></i></button>
+      <button *ngIf="isFavorite" (click)="removeFavorite(placeDetail)" type="button" class="btn btn-sm" style="background-color:white; border: solid grey 1px"><i class="fa fa-star"></i></button>
+      <a target='_blank' href="{{twitterUrl}}">
+        <img style="width:37px;height:36px;" src="http://cs-server.usc.edu:45678/hw/hw8/images/Twitter.png" />
+      </a>
+    </div>
+  </div>
+  <div>
+    <div style="margin-top:2%; margin-bottom:2%">
+        <ul class="nav nav-tabs justify-content-end" style="color:#2D7CF6">
+            <li class="nav-item">
+              <a class="nav-link" [ngClass]="{'nav-text': showInfoDiv}" [class.active]="showInfoDiv" (click)="showInfo()">Info</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" [ngClass]="{'nav-text': showPhotosDiv}" [class.active]="showPhotosDiv" (click)="showPhotos()">Photos</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" [ngClass]="{'nav-text': showMapDiv}" [class.active]="showMapDiv" (click)="showMap()">Map</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" [ngClass]="{'nav-text': showReviewsDiv}" [class.active]="showReviewsDiv" (click)="showReviews()">Reviews</a>
+            </li>
+        </ul>
+    </div>
+    <div *ngIf="showInfoDiv">
+      <table class="table table-striped">
+        <tbody>
+          <tr *ngIf="placeDetail?.formatted_address">
+            <th>Address</th>
+            <td>{{placeDetail.formatted_address}}</td>
+          </tr>
+          <tr *ngIf="placeDetail.international_phone_number">
+            <th>Phone Number</th>
+            <td>{{placeDetail.international_phone_number}}</td>
+          </tr>
+          <tr *ngIf="pricelevel.length > 0">
+            <th>Price Level</th>
+            <td>
+              <span *ngFor="let item of pricelevel">$</span>
+            </td>
+          </tr>
+          <tr *ngIf="placeDetail?.rating">
+            <th>Rating</th>
+            <td>
+              <span>{{placeDetail.rating}}</span>
+              <ng-template #t let-fill="fill">
+                <span class="star" [class.full]="fill === 100">
+                  <span class="half" [style.width.%]="fill"><span class="fa fa-star"></span></span><span style="color:transparent;" class="fa fa-star"></span>
+                </span>
+              </ng-template>
+              <ngb-rating [(rate)]="placeDetail.rating" [starTemplate]="t" [readonly]="true" max="5"></ngb-rating>
+            </td>
+          </tr>
+          <tr *ngIf="placeDetail?.url">
+            <th>Google Page</th>
+            <td>
+              <a href="{{placeDetail.url}}" target="_blank">{{placeDetail.url}}</a>
+            </td>
+          </tr>
+          <tr *ngIf="placeDetail?.website">
+            <th>Website</th>
+            <td>
+              <a href="{{placeDetail.website}}" target="_blank">{{placeDetail.website}}</a>
+            </td>
+          </tr>
+          <tr class="container" *ngIf="openNow != 0">
+            <th>Hours</th>
+            <td class="row">
+              <div *ngIf="openNow == 1"> Open Now </div>
+              <div *ngIf="openNow == 2"> Closed </div>
+              <a data-toggle="modal" data-target="#myModal" (click)="openModal()" style="color:#2D7CF6"> Show Daily Hours</a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div *ngIf="showPhotosDiv" stype="margin-top:2%">
+      <div *ngIf="zeroPhotos" class=" alert alert-warning" style="margin-top:2%">
+            No Records
+      </div>
+      <div class="row">
+          <div class="col-md-3">
+           <a *ngFor="let col1 of firstColumn" target="_blank" href="{{col1}}"><img style="margin-bottom:7%;" src={{col1}} class="img-fluid img-thumbnail rounded float-left"/></a>
+          </div>
+          <div class="col-md-3">
+            <a *ngFor="let col1 of secondColumn" target="_blank" href="{{col1}}"><img style="margin-bottom:7%;" src={{col1}} class="img-fluid img-thumbnail rounded float-left"/></a>
+          </div>
+          <div class="col-md-3">
+              <a *ngFor="let col1 of thirdColumn" target="_blank" href="{{col1}}"><img style="margin-bottom:7%;" src={{col1}} class="img-fluid img-thumbnail rounded float-left"/></a>
+          </div>
+          <div class="col-md-3">
+            <a *ngFor="let col1 of fourthColumn" target="_blank" href="{{col1}}"><img style="margin-bottom:7%;" src={{col1}} class="img-fluid img-thumbnail rounded float-left"/></a>
+          </div>
+      </div>
+    </div>
+    <div [ngStyle]="{'display': showMapDiv?'block':'none'}">
+      <div class="container" style="padding-left:0;">
+          <form>
+            <div class="form-row">
+              <div class="form-group col-md-4">
+                  <label for="keyword">From</label>
+                  <input (input)="showKeywordWarning()"  #autocomp #location="ngModel" id="manual_location" class="form-control" name="keyword" type="text" value="from" [(ngModel)]="mapVal.from"
+                    name="from">
+              </div>
+              <div class="form-group col-md-4">
+                  <label for="to">To</label>
+                  <input class="form-control" id="to" type="text" value="{{placeDetail.name}}" readonly>
+              </div>
+              <div class="form-group col-md-2">
+                  <label for="travelMode">Travel Mode</label>
+                  <select class="form-control" id="travelMode" [(ngModel)]="mapVal.travelMode" name="mode">
+                    <option value="DRIVING">Driving</option>
+                    <option value="BICYCLING">Bicycling</option>
+                    <option value="TRANSIT">Transit</option>
+                    <option value="WALKING">Walking</option>
+                  </select>
+              </div>
+              <div class="form-group col-md-1">
+                  <label> </label>
+                  <button style="margin-top:11%" type="button" [disabled]="getDirectionDisable"(click)="getDirections()" class="btn btn-primary">Get Directions</button>
+              </div>
+            </div>
+          </form>
+          <a *ngIf="showPegmanIcon" (click)="showPegman()">
+            <img style="width:32px;height:30px;border:lightgrey solid 1px; margin-bottom: 0.5%;
+            margin-top:-10px;border-radius:4px;" src="http://cs-server.usc.edu:45678/hw/hw8/images/Pegman.png">
+          </a>
+          <a *ngIf="showMapsIcon" (click)="showMapIcon()">
+            <img style="width:32px;height:30px; margin-bottom: 0.5%;
+            margin-top:-10px;border-radius:4px;" src="http://cs-server.usc.edu:45678/hw/hw8/images/Map.png">
+          </a>
+      </div>
+      <div #googleMap style="height:400px;"></div>
+      <div #googleMapPanel></div>
+    </div>
+    <div *ngIf="showReviewsDiv" stype="margin-top:2%">
+      <div class="row">
+        <div class="col-md-2">
+            <div class="dropdown show">
+                <a class="btn btn-secondary dropdown-toggle" href="https://example.com" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                 {{reviewString}}
+                </a>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                  <a class="dropdown-item" (click)="reviewType = 'google'; reviewString = 'Google Review'; showReviews()">Google Reviews</a>
+                  <a class="dropdown-item" (click)="reviewType = 'yelp'; reviewString = 'Yelp Review'; showReviews()">Yelp Reviews</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="dropdown show" style="margin-left:4px">
+                <a class="btn btn-secondary dropdown-toggle" href="https://example.com" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                 {{sortString}}
+                </a>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                  <a class="dropdown-item" (click)="sortType = 'default'; sortString = 'Default Order'; showReviews()">Default Order</a>
+                  <a class="dropdown-item" (click)="sortType = 'highest'; sortString = 'Highest Rating'; showReviews()">Highest Rating</a>
+                  <a class="dropdown-item" (click)="sortType = 'lowest'; sortString = 'Lowest Rating'; showReviews()">Lowest Rating</a>
+                  <a class="dropdown-item" (click)="sortType = 'most'; sortString = 'Most Recent'; showReviews()">Most Recent</a>
+                  <a class="dropdown-item" (click)="sortType = 'least'; sortString = 'Least Recent'; showReviews()">Least Recent</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div *ngIf="reviewType == 'google'">
+      <div *ngIf="zeroGoogle" class=" alert alert-warning" style="margin-top:2%">
+        No Records
+      </div>
+      <div class="container" *ngFor="let review of reviews">
+          <div class="row review-card">
+            <div class="col-md-1"><a target="_blank" href="{{review.author_url}}"><img style="width:60px; height:60px;" src="{{review.profile_photo_url}}"/></a></div>
+            <div class="col-md-11">
+              <div>
+                  <a target="_blank" href="{{review.author_url}}">{{review.author_name}}</a>
+              </div>
+              <div>
+                <ng-template #t let-fill="fill">
+                  <span class="star" [class.full]="fill === 100">
+                    <span class="half" [style.width.%]="fill"><span class="fa fa-star"></span></span><span style="color:transparent;" class="fa fa-star"></span>
+                  </span>
+                </ng-template>
+                <ngb-rating [(rate)]="review.rating" [starTemplate]="t" [readonly]="true" max="5"></ngb-rating>
+                {{review.time * 1000 | date:'yyyy-MM-dd HH:mm:ss'}}
+              </div>
+              <div>
+                  {{review.text}}
+              </div>
+            </div>
+          </div>
+      </div>
+    </div>
+
+    <div *ngIf="reviewType == 'yelp'">
+        <div *ngIf="zeroYelp" class=" alert alert-warning" style="margin-top:2%">
+            No Records
+        </div>
+        <div class="container" *ngFor="let review of yelpReviews">
+            <div class="row review-card">
+              <div class="col-md-1"><a target="_blank" href="{{review.url}}"><img style="width: 65px;height: 65px;border-radius: 30px;" src="{{review.user.image_url}}"/></a></div>
+              <div class="col-md-11">
+                <div>
+                    <a target="_blank" href="{{review.url}}">{{review.user.name}}</a>
+                </div>
+                <div>
+                  <ng-template #t let-fill="fill">
+                      <span class="star" [class.full]="fill === 100">
+                        <span class="half" [style.width.%]="fill"><span class="fa fa-star"></span></span><span style="color:transparent;" class="fa fa-star"></span>
+                      </span>
+                  </ng-template>
+                  <ngb-rating [(rate)]="review.rating" [starTemplate]="t" [readonly]="true" max="5"></ngb-rating>
+                  {{review.time_created}}
+                </div>
+                <div>
+                    {{review.text}}
+                </div>
+              </div>
+            </div>
+        </div>
+    </div>
+  </div>
+</div>
+<div class="container" >
+    <div class="modal fade" id="myModal" *ngIf="showTimingModel">
+      <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title">Open Hours</h4>
+            </div>
+            <div class="modal-body">
+              <tbody *ngFor="let timing of modalTimings">
+                <tr>
+                  <th>{{timing.day}}</th>
+                  <td>{{timing.time}}</td>
+                  <hr style="color:grey">
+                </tr>
+              </tbody>
+            </div>
+            <div class="modal-footer">
+              <button (click)="closeModal()" type="button" class="btn btn-default btn-sm" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+      </div>
+    </div>
+</div>
+          
+ 

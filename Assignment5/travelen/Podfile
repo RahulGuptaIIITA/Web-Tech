@@ -1,0 +1,13 @@
+platform :ios, '9.0'
+
+target 'travelen' do
+  # Comment the next line if you're not using Swift and don't want to use dynamic frameworks
+  use_frameworks!
+
+  # Pods for travelen
+  pod 'GoogleMaps', '~> 2.6'
+  pod 'GooglePlaces', '~> 2.6'
+  pod 'Cosmos', '~> 15.0'
+  pod 'HCSStarRatingView', '~> 1.5'
+  pod 'SwiftSpinner'
+end

@@ -1,0 +1,125 @@
+<!--The content below is only a placeholder and can be replaced.-->
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <base href="/">
+    <title>Hw 8</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  </head>
+
+  <body>
+    <div class="container">
+        <div id = "form-div">
+          <div class="container panel-body" style="padding-bottom:2%;">
+            <h3 class="text-center">Travel and Entertainment Search</h3>
+            <form id="myform">
+                
+              <div class="form-group row"> 
+                <div class="col-sm-2 col-form-label"></div>
+                <label for="keyword" class="col-sm-2 col-form-label">Keyword<span style="color:red">*</span></label>
+                <div class="col-sm-6">
+                  <input [ngClass]="{'red-border-class': showKeywordWarning() && keyword.touched}" #keyword="ngModel" class="form-control" name="keyword" type="text" [(ngModel)]="inputs.keyword">
+                  <div id="warning" *ngIf="showKeywordWarning() && keyword.touched" >Please Enter a Keyword</div>
+                </div>
+              </div>
+
+              <div class="form-group row">
+                <div class="col-sm-2 col-form-label"></div>
+                <label for="category" class="col-sm-2 col-form-label">Category</label>
+                <div class="col-sm-4">
+                  <select class="form-control" name="category" [(ngModel)]="inputs.category">
+                    <option value="default">Default</option>
+                    <option value="airport">Airport</option>
+                    <option value="amusement_park">Amusement Park</option>
+                    <option value="aquarium">Aquarium</option>
+                    <option value="art_gallery">Art Gallery</option>
+                    <option value="bakery">Bakery</option>
+                    <option value="bar">Bar</option>
+                    <option value="beauty_salon">Beauty Salon</option>
+                    <option value="bowling_alley">Bowling Alley</option>
+                    <option value="bus_station">Bus Station</option>
+                    <option value="cafe">Cafe</option>
+                    <option value="campground">Campground</option>
+                    <option value="cafe">Car Rental</option>
+                    <option value="casino">Casino</option>
+                    <option value="lodging">Lodging</option>
+                    <option value="movie_theater">Movie Theater</option>
+                    <option value="museum">Museum</option>
+                    <option value="night_club">Night Club</option>
+                    <option value="park">Park</option>
+                    <option value="parking">Parking</option>
+                    <option value="restaurant">Restaurant</option>
+                    <option value="shopping_mall">Shopping Mall</option>
+                    <option value="subway_station">Subway Station</option>
+                    <option value="taxi_stand">Taxi Stand</option>
+                    <option value="train_station">Train Station</option>
+                    <option value="transit_station">Transit Station</option>
+                    <option value="travel_agency">Travel Agency</option>
+                    <option value="zoo">zoo</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-group row">
+                <div class="col-sm-2 col-form-label"></div>
+                <label for="distance" class="col-sm-2 col-form-label">Distance(miles)</label>
+                <div class="col-sm-4">
+                  <input class="form-control" name="distance" type="text" placeholder="10" [(ngModel)]="inputs.distance">
+
+                </div>
+              </div>
+
+              <div class="form-group row">
+                <div class="col-sm-2 col-form-label"></div>
+                <label for="location" class="col-sm-2 col-form-label">From<span style="color:red">*</span></label>
+
+                <div class="col-sm-6" id="location">
+
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" [(ngModel)]="modelLocation" name="location" value="automatic" (click)="disableLocationTextbox();">
+                    <label class="form-check-label" for="cuurent_loc">Current location
+                    </label>
+                  </div>
+
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" [(ngModel)]="modelLocation" name="location" value="google" (click)="enableLocationTextbox();">
+                    <label class="form-check-label" for="location">
+                      Other. Please specify:
+                    </label>
+                  </div>
+
+                  <input [ngClass]="{'red-border-class': showLocationWarning() && location.touched}" #autocomp #location="ngModel" class="form-control" id="manual_location" type="text" placeholder="location" [(ngModel)]="inputs.customLoc" name="locationTextbox" ngDefaultControl [disabled]="isDisabled" required>
+                  <div id="warning" *ngIf="showLocationWarning() && location.touched" >Please Enter a Location</div>
+                
+                </div>
+              </div>
+              <div class="form-group row">
+                <div class="col-sm-2"></div>
+                <button style="margin-left:1.5%; margin-right:.6%;" submit [disabled]="!checkSearchButton()" (click)="searchPlace();" class="btn btn-primary btn-md"><i class="fa fa-search"></i>Search</button>
+                <button type="button" (click)="clear();" class="btn btn-default btn-md">Clear</button>
+              </div>
+            </form>
+          </div>
+        </div>
+        <div style="text-align:center;margin-top:2%;">
+          <button *ngIf="showResult" class="btn btn-primary" (click)="searchPlace()">Results</button>
+          <button *ngIf="!showResult"class="btn btn-default" (click)="searchPlace()" style="color:#2D7CF6; background-color:transparent;">Results</button>
+          <button *ngIf="showFavorite" class="btn btn-primary" (click)="showFavorites()">Favorites</button>
+          <button *ngIf="!showFavorite" class="btn btn-default" (click)="showFavorites()" style="color:#2D7CF6; background-color:transparent;">Favorites</button>
+        </div>
+        <div class="progress" *ngIf="showProgressBar" style="margin-top:15px">
+          <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 75%"></div>
+        </div>
+        <app-places *ngIf="isLoading" (triggerButton)="trig($event)" [mapBody] =mapBodyJson [showFavorite]=showFavorite [showResult]=showResult [places]=placesList [nextPageToken]=nextPageToken [listIndex]=listIndex></app-places>
+        <div *ngIf="zeroResult" class="alert alert-warning" style="margin-top:6%">
+            No Records.
+        </div>
+    </div>
+    
+  </body>
+</html>
+
+

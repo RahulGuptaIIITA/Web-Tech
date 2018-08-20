@@ -1,0 +1,37 @@
+PODS:
+  - Cosmos (15.0.0)
+  - GoogleMaps (2.6.0):
+    - GoogleMaps/Maps (= 2.6.0)
+  - GoogleMaps/Base (2.6.0)
+  - GoogleMaps/Maps (2.6.0):
+    - GoogleMaps/Base
+  - GooglePlaces (2.6.0):
+    - GoogleMaps/Base (= 2.6.0)
+  - HCSStarRatingView (1.5)
+  - SwiftSpinner (1.5.0)
+
+DEPENDENCIES:
+  - Cosmos (~> 15.0)
+  - GoogleMaps (~> 2.6)
+  - GooglePlaces (~> 2.6)
+  - HCSStarRatingView (~> 1.5)
+  - SwiftSpinner
+
+SPEC REPOS:
+  https://github.com/CocoaPods/Specs.git:
+    - Cosmos
+    - GoogleMaps
+    - GooglePlaces
+    - HCSStarRatingView
+    - SwiftSpinner
+
+SPEC CHECKSUMS:
+  Cosmos: a6dbd3d0baa0cc8f51f8598f7508d5a09d0a9ade
+  GoogleMaps: 42f91c68b7fa2f84d5c86597b18ceb99f5414c7f
+  GooglePlaces: f6ddf33b75cef69e888907d9947c57198ed845f3
+  HCSStarRatingView: 1d18f79654735514cd6f00e6d90e38cb6320dc31
+  SwiftSpinner: 4c058c7a1d6b444dd2e1d70988ead40783097133
+
+PODFILE CHECKSUM: f2fab87f6e6bec5f8fb49cc41fceef8afcaa5265
+
+COCOAPODS: 1.5.0

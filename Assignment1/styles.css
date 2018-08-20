@@ -1,0 +1,233 @@
+body{
+	padding: 0;
+	margin: 0;
+}
+
+.full-page {
+	width: 1060px;
+	color: #4f4f4f;
+	font-family: Sans-Serif; 
+	overflow: hidden;
+}
+
+/* Top Bar */
+.shop-address {
+	position: relative;
+	top: 28px;
+	left: 105px;;
+	font-family: Sans-Serif;
+	font-size: 10px;
+	line-height: 16px;
+}
+
+.shop-name {
+	position: relative;
+	width: 100%;
+	color: #BD9C58;
+	font-size: 45px;
+	letter-spacing: 14px;
+	top: 20px;
+	left: 400px;
+	font-weight: 400;
+}
+
+/* Navigation Bar */
+.navigation-bar {
+	position: relative;
+    border-top: 1px solid rgb(205, 205, 205, 0.5);
+    width: 100%;
+    top: 75px;
+}
+
+.navigation-bar ul {
+	margin: 0;
+	list-style-type: none;
+    background-color: #ffffff;
+    width: 85%;
+    padding-top: 15px;
+    padding-bottom: 6px;
+}
+
+.navigation-bar li {
+    float: left;
+    width: 20%;
+    font-size: 14px;
+    text-align:center;
+}
+
+.navigation-bar a {
+	color: #4f4f4f;
+    text-align: center;
+    text-decoration: none;
+}
+
+.navigation-bar a.active {
+    color: #BD9C58;
+}
+
+/* Parralex Effect */
+.image6 {
+	background-image: url("http://cs-server.usc.edu:45678/hw/hw3/images/image6.jpg");
+	background-repeat: no-repeat;
+	background-attachment: fixed;
+	background-size: auto 1060px;
+	background-position: -325px 65px;
+	height: 600px;
+	margin-top: 95px;
+}
+
+.mid-section-left {
+	margin-top:11%;
+	float: left;
+	width: 38%;
+	margin-left: 10%;
+}
+
+.mid-section-right {
+	margin-top: 4%;
+	float: right;
+	width: 38%;
+	margin-right: 10%;
+}
+
+.top-text {
+	margin-left: 8px;
+}
+
+.our-restaurant {
+	font-size: 10px;
+	font-weight: 500;
+	letter-spacing: 3px;
+}
+
+.local-fresh-cuisine {
+	color: #BD9C58;
+	font-family: 'Libre Baskerville Italic', arial;
+	font-weight: 500;
+	font-style: italic;
+	font-size: 28px;
+	padding-top: 12px;
+	font-weight: 600;
+}
+
+.freshest-island {
+	color: #BD9C58;
+	font-family: 'Libre Baskerville Italic', arial;
+	font-weight: 500;
+	font-style: italic;
+	font-size: 28px;
+	padding-top: 70px;
+	line-height: 40px;
+	font-weight: 600;
+}
+
+.mid-section-text {
+	color: #4f4f4f;
+	font-size: 12px;
+	margin-top: 8px;
+	font-family: Sans-Serif;
+	line-height: 18px;
+	letter-spacing: 0.5px;
+}
+
+.read-more {
+	margin-top: 13px;
+	font-size: 14px;
+	color: black;
+	text-decoration: none;
+	line-height: 55px;
+}
+
+a.read-more:hover {
+	color:#BD9C58;
+}
+
+.image7 {
+	position: relative;
+	margin-left: 10%;
+	margin-right: 10%;
+	margin-top: 108%;
+}
+
+.image7-text {
+    position: absolute;
+	text-align: center;
+	top: 210px;
+	width: 42%;
+	background-color: #ffffff;
+	height: 84px;
+	margin-left: 29%;
+	padding-top: 5%;
+	font-size: 13px;
+}
+
+.head {
+	text-align: center;
+	font-size: 12px;
+	font-weight: 500;
+}
+
+.order-online {
+	text-align: center;
+	font-size: 27px;
+	font-weight: 500;
+	margin-top: 2%;
+	color:black;
+	text-decoration: none;
+}
+
+a.order-online:hover {
+	color:#BD9C58;
+}
+
+.bottom-text {
+	margin-top: 5%;
+	text-align: center;
+}
+
+.url {
+	font-size: 12px;
+}
+
+.tagline {
+	color: #BD9C58;
+	font-family: 'Libre Baskerville Italic', arial;;
+	font-weight: 500;
+	font-style: italic;
+	font-size: 28px;
+	font-weight: 600;
+	padding-top: 10px;
+}
+
+.bottom-image {
+	background-image: url(http://cs-server.usc.edu:45678/hw/hw3/images/image5.jpg);
+	background-repeat: no-repeat;
+	background-attachment: fixed;
+	background-size: auto auto;
+	background-position: 0px -230px;
+	width: 100%;
+	height: 650px;
+	margin-top: 6%;
+}
+
+
+.bottom-footer {
+	background-color: #B89C62;
+	color: #ffffff;
+	padding-top: 4%;
+	height: 130px;
+	padding-right: 16%;
+	font-size: 12px;
+	font-weight: 600;
+	font-family: "arial";
+}
+
+.copyright {
+	padding-left: 80.5%;
+	width: 212px;
+}
+
+.email {
+	padding-left: 80.5%;
+	width: 210px;
+}
